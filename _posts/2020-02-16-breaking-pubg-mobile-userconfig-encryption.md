@@ -1,16 +1,14 @@
 ---
 layout: post
 title: "Cracking PUBG mobile's UserConfig encryption"
+author: "Jamie Davidson"
 date: 2020-02-16 02:06:51 +0000
 category: side-projects
 tags: [encryption, just-for-fun]
 ---
 
 
-
-## Cracking PUBG mobile's UserConfig encryption
-
-### Introduction
+## Introduction
 
 **This is a technical writeup of the process that I followed to accomplish this objective back in early 2018. Because of the time between my writeup and writing the application, some of these details may now be inaccurate. This is an example of how NOT to do encryption, by the way. Please don't use this as a guide to 'secure' anything, ever.**
 
@@ -20,7 +18,7 @@ When the mobile version of PUBG was released it was apparent that it was an old 
 
 The stop gap solution for these exploits was to encrypt some configuration (.ini) files used for these exploits. I can only assume that the hope was that the average player would be unable to bypass it while the developers worked on patching them properly.
 
-### What is a .ini file?
+## What is a .ini file?
 
 The [`.ini` file format](https://en.wikipedia.org/wiki/INI_file) is common for configuration settings in many older languages such as C++, which is the language used for the Unreal Engine on which PUBG is built. The file format is not language specific, however newer languages and technologies avoid leaning on the format, and for Windows they were gradually replaced in favour of XML configuration files over a decade ago.
 
@@ -28,9 +26,9 @@ These configuration files are [well documented by Unreal](https://docs.unrealeng
 
 PUBG Mobile uses the configuration file `UserCustom.ini` file to store these settings. The file was not encrypted in the original release of the game, and thankfully I kept a copy of the file around when the patch went live.
 
-### Analysis of the encrypted file and patterns
+## Analysis of the encrypted file and patterns
 
-#### Comparing encrypted vs decrypted
+### Comparing encrypted vs decrypted
 
 Here's what a section of the unencrypted file looks like:
 
@@ -84,7 +82,7 @@ We can confirm this theory by looking at the character `=` which according to th
 
 Now we can test out another theory... is this actually encrypted at all? Have we just been tricked by hexadecimal? Are these just the ASCII keycodes in HEX form?
 
-#### Back up, what's ASCII?
+### Back up, what's ASCII?
 
 [ASCII](https://en.wikipedia.org/wiki/ASCII) stands for **American Standard Code for Information Interchange**, and is an agreed upon standard for character encoding. It's a standard which was developed, tweaked and approved by an entire committee in order to ensure that different brands of computers could talk to each other. All of that might sound tremendously boring (because it is), but it's something that we often take for granted as it's so intertwined with every aspect of technology. It's hard to imagine today, but there was a time when communication between different brands of devices was a huge technical challenge. [Here's a handy link to the history of ASCII](http://ascii-world.wikidot.com/history) if you're interested in reading more.
 
@@ -96,7 +94,7 @@ The website [asciitable](https://asciitable.com) (registered in 1999 and a child
 
 Our hexadecimal number for our equals sign is 44, which is 68 in decimal. Unfortunately, 68 maps to `D`, not what we were looking for. So that's one theory out of the window.
 
-#### Some manual mapping
+### Some manual mapping
 
 Given our earlier conclusion that one decrypted character maps to one byte (2 characters in HEX), we can start to manually map out some characters to see if there are any observable patterns. This is as simple as comparing the encrypted vs unencrypted strings. Just comparing a single short string can provide a large number of characters.
 
@@ -166,13 +164,13 @@ What this reveals is that the result of _some operation_ on the character y is 0
 
 This is a potential indicator that the character y, 121, or 01111001 is the key for some encryption operation. So lets review some common **bitwise operators** to see if we can figure out what may have been done.
 
-### Bitwise operations and cracking the code
+## Bitwise operations and cracking the code
 
 These bitwise operations are commonly used for encryption, and can be used in combination with one another and multiple times in a single encryption method.
 
 To easily evaluate bitwise operations, I use a website called [Bitwise CMD](http://bitwisecmd.com/).
 
-#### Bit shifting
+### Bit shifting
 
 The first bitwise operator we'll look at is called bit shifting.
 
@@ -188,7 +186,7 @@ Bit shifting is an operation which manipulates a series of bits to produce a dif
 
 This bit shifting operation has the same effect as multiplication and division, where `12 << 1` is the same as `12 * 2`, and in the case of shifting left, the left-most bit becomes the right-most bit and vice versa. So an operation `10000001 << 1` results in `00000011`.
 
-#### Bitwise AND operator
+### Bitwise AND operator
 
 AND operation compares each bit from both sides of the operation and applies the following logic to them:
 
@@ -211,7 +209,7 @@ As an example, lets take the numbers 123 and 234.
 = 106 01101010
 ```
 
-#### Bitwise OR operator
+### Bitwise OR operator
 
 OR operation compares each bit and applies the following:
 
@@ -232,7 +230,7 @@ Lets use 123 and 234 as our example again.
 = 251 11111011
 ```
 
-#### Bitwise XOR operator
+### Bitwise XOR operator
 
 The last operator we'll look at is the XOR (eXclusive-OR) operator. Here's the logic table for XOR:
 
@@ -281,7 +279,7 @@ And thus we have a terrible, provable and easily reversible encryption algorithm
 
 
 
-### Writing some code to do this for me
+## Writing some code to do this for me
 
 The full code (including a build in the releases) is [available in a repository on my Github page](https://github.com/JamieDavidson/PUBGMobileConfigDecrypter)
 
@@ -318,7 +316,7 @@ Rather than lengthen this post with full code, you can view the full repository 
 
 
 
-### Conclusion
+## Conclusion
 
 Without using any reverse engineering techniques (which would risk infringing copyright) - this process was entirely manual investigation with predetermined input and output.
 
