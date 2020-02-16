@@ -3,7 +3,7 @@ layout: post
 title: "Cracking PUBG mobile's UserConfig encryption"
 date: 2020-02-16 02:06:51 +0000
 category: side-projects
-tags: encryption just-for-fun
+tags: [encryption, just-for-fun]
 ---
 
 
