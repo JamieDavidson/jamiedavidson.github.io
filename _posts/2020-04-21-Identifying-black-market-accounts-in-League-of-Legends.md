@@ -1298,7 +1298,7 @@ We then enter a loop which will likely continue forever, where we check to see i
 
 It's time to test out the application, we'll provide our test subject YvonnevJdNbK as patient zero, and watch it go as it generates a report and moves on to the next.
 
-{% include image.html url="/assets/images/casshan/dryrun.png" description="Fig 4. Number of accounts by suspicion rating." %}
+{% include image.html url="/assets/images/casshan/dryrun.png" description="Fig 4. Casshan proof of concept dry run." %}
 
 The generated report can be viewed on disk, and by serializing it to JSON we can use this data later for further analysing, rather than look at them by hand. Lets take a look at the report generated for the account that started off this journey, YvonnevJdNbK
 
@@ -1382,7 +1382,7 @@ I left Casshan running for several days, over which it accumulated over 3,538 re
 
 As it turns out, the data that it gathered is still a tad unreliable. It turns out that I neglected to strip single character names from the list of suspicious names, and so _almost_ every name was treated as suspicious and increased the suspicion rating by 1.
 
-{% include image.html url="/assets/images/casshan/graphedfindings.png" description="Fig 4. Number of accounts by suspicion rating." %}
+{% include image.html url="/assets/images/casshan/graphedfindings.png" description="Fig 5. Number of accounts by suspicion rating." %}
 
 Of the 3,538 accounts observed, 531 accounts have been observed to have changed name, indicating that they have been purchased by a player. There are likely some that were purchased and have not had a name change, but I have yet to investigate the data further.
 
