@@ -4,9 +4,6 @@
 
 layout: default
 ---
-Hello world :D
-
-
 
 <ul>
 {% for post in site.posts %}
