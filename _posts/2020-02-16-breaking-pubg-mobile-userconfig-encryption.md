@@ -89,7 +89,7 @@ There was a phase where people on the internet created [works of art dubbed "ASC
 
 The website [asciitable](https://asciitable.com) (registered in 1999 and a child site of [lookuptables](https://lookuptables.com)) hosts an ASCII table, showing the mapping of numbers to ASCII characters.
 
-![ASCII TABLE](http://www.asciitable.com/index/asciifull.gif)
+![ASCII TABLE](http://www.asciitable.com/asciifull.gif)
 
 Our hexadecimal number for our equals sign is 44, which is 68 in decimal. Unfortunately, 68 maps to `D`, not what we were looking for. So that's one theory out of the window.
 
